@@ -1,9 +1,8 @@
 // Import express and request modules
 const express = require('express');
-const request = require('request');
 const bodyParser = require('body-parser');
-const botController = require('./controllers/bot.js');
-const hangController = require('./controllers/hang.js');
+const botController = require('./bot.js');
+const hangController = require('./hang.js');
 
 const PORT = process.env.PORT || 4390;
 // Instantiates Express and assigns our app variable to it
