@@ -20,6 +20,8 @@ app.listen(PORT, () => {
     console.info(`Express server started on ${PORT}`);
 });
 
+app.get('/', (req,res) => res.send("Hello world!"));
+
 app.post('/bot', botController);
 
 app.post('/hang', hangController);
