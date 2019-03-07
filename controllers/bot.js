@@ -1,7 +1,6 @@
 const { WebClient } = require('@slack/client');
-// An access token (from your Slack app or custom integration - xoxp, xoxb)
-const token = "xoxp-2369683355-480328589971-569728312146-778ca384eb446cb0ae282fb724203067";
 
+const token = process.env.token;
 const web = new WebClient(token);
 
 
