@@ -17,5 +17,6 @@ module.exports = async (req, res) => {
         }
     } catch (e) {
         console.error("Error occurred processing bot query:", e);
+        require("./skills/fallback")(payload);   
     }
 };
