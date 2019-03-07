@@ -29,7 +29,6 @@ module.exports = async (req, res) => {
             if (text.includes("td set")) {
                 const taggedUser = text.slice(text.indexOf("set") + 4);
                 if (taggedUser) {
-                    const currentTrueDefective = taggedUser;
                     const defective = new Defective({name: taggedUser, date: Date.now()});
                     await defective.save();
                     return await write(channel, taggedUser + " is now our true defective!");
