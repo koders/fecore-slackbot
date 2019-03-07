@@ -8,7 +8,7 @@ const hangController = require('./controllers/hang.js');
 // Slack config
 const clientId = '2369683355.569488704771';
 const clientSecret = 'ab2c9ae74104dec11ec8dca2be1807c9';
-const PORT=4390;
+const PORT= process.env.PORT || 8080;
 
 // Instantiates Express and assigns our app variable to it
 const app = express();
