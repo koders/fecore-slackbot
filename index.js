@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const botController = require('./controllers/bot.js');
 const hangController = require('./controllers/hang.js');
 
-const PORT = process.env.PORT || 8080;
+const PORT = 4390;
 // Instantiates Express and assigns our app variable to it
 const app = express();
 app.use(bodyParser.urlencoded({

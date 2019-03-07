@@ -1,10 +1,11 @@
 const { WebClient } = require('@slack/client');
 // An access token (from your Slack app or custom integration - xoxp, xoxb)
-const token = "xoxp-2369683355-480328589971-569495721283-1e4bd95c25ebb7f667be849f2faa66af";
+const token = "xoxp-2369683355-480328589971-569728312146-778ca384eb446cb0ae282fb724203067";
 
 const web = new WebClient(token);
 
 
+let currentTrueDefective = "";
 
 module.exports = async (req, res) => {
     const payload = req.body;
@@ -17,12 +18,23 @@ module.exports = async (req, res) => {
     res.sendStatus(200);
 
     try {
-        if (payload.event && payload.event.type === "app_mention") {
-            if (payload.event.text.includes("help")) {
+        const { text, type, channel } = payload.event;
+
+        if (payload.event && type === "app_mention") {
+            if (msgTxt.includes("help")) {
                 console.log("help received!");
-                await web.chat.postMessage({ channel: payload.event.channel, text:
+                await web.chat.postMessage({ channel, text:
                     `Here's how I can help you:
                         - @bot 123: does nothing...` });
+            }
+
+            if (msgTxt.includes("td set")) {
+                console.log(payload);
+                const taggedUser = text.slice(text.indexOf("set") + 4);
+                if (!taggedUser) {
+                    await web.chat.postMessage({ channel, text:
+                        "You have to tag a user to set him as a true defective person" });  
+                }
             }
         }
     } catch (e) {
