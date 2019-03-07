@@ -20,14 +20,14 @@ module.exports = async (req, res) => {
         const { text, type, channel } = payload.event;
 
         if (payload.event && type === "app_mention") {
-            if (msgTxt.includes("help")) {
+            if (text.includes("help")) {
                 console.log("help received!");
                 await web.chat.postMessage({ channel, text:
                     `Here's how I can help you:
                         - @bot 123: does nothing...` });
             }
 
-            if (msgTxt.includes("td set")) {
+            if (text.includes("td set")) {
                 console.log(payload);
                 const taggedUser = text.slice(text.indexOf("set") + 4);
                 if (!taggedUser) {
