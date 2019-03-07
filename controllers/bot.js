@@ -1,10 +1,8 @@
 const { WebClient } = require('@slack/client');
+const Defective = require("../models/defective");
 
 const token = process.env.token;
 const web = new WebClient(token);
-
-// TODO use DB
-let currentTrueDefective = "";
 
 module.exports = async (req, res) => {
     const payload = req.body;
@@ -32,6 +30,8 @@ module.exports = async (req, res) => {
                 const taggedUser = text.slice(text.indexOf("set") + 4);
                 if (taggedUser) {
                     currentTrueDefective = taggedUser;
+                    const defective = new Defective({name: taggedUser, date: Date.now()});
+                    await defective.save();
                     return await write(channel, taggedUser + " is now our true defective!");
                 } else {
                     return await write(channel, "You have to tag a user to set him as a true defective person.");  
