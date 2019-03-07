@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const botController = require('./controllers/bot.js');
 const hangController = require('./controllers/hang.js');
 
-const PORT = 4390;
+const PORT = process.env.PORT || 4390;
 // Instantiates Express and assigns our app variable to it
 const app = express();
 app.use(bodyParser.urlencoded({
@@ -15,6 +15,10 @@ app.use(bodyParser.json());
 app.listen(PORT, () => {
     console.info(`Express server started on ${PORT}`);
 });
+
+const mongoose = require('mongoose');
+const { dbUser, dbPass } = process.env;
+mongoose.connect(`mongodb://${dbUser}:${dbPass}@ds261155.mlab.com:61155/heroku_58w9h6k4`, {useNewUrlParser: true});
 
 app.get('/', (req,res) => res.send("Hello world!"));
 
