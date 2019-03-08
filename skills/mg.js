@@ -62,14 +62,40 @@ const postInfoAboutNextMiniGrooming = async (channel) => {
     }
 }
 
+const setNextMiniGrooming = async () => {
+    const lastMiniGrooming = await MiniGrooming.findOne().sort({ date: -1 });
+    const lastMiniGroomingDate = lastMiniGrooming.date;
+    let nextMiniGroomingDate = new Date();
+    if (lastMiniGroomingDate.getDay() === 2) {
+        nextMiniGroomingDate = lastMiniGroomingDate.setDate(lastMiniGroomingDate.getDate() + 2);
+    } else {
+        nextMiniGroomingDate = lastMiniGroomingDate.setDate(lastMiniGroomingDate.getDate() + 5);
+    }
+    const newMiniGroomingRequest = new MiniGrooming({
+        date: nextMiniGroomingDate,
+        happenning: false,
+    });
+    return await newMiniGroomingRequest.save();
+}
+
 const privateChannelId = process.env.fartingElephant;
 
 // Every Tue 11:15
 new CronJob('15 11 * * 2', async function() {
-    postInfoAboutNextMiniGrooming(privateChannelId);
+    try {
+        await setNextMiniGrooming();
+        await postInfoAboutNextMiniGrooming(privateChannelId);
+    } catch (e) {
+        console.error("Error executing Tuesdays Mini-grooming cron: ", e);
+    }
 }, null, true, 'Europe/Riga');
 
 // Every Thu 11:15
 new CronJob('15 11 * * 4', async function() {
-    postInfoAboutNextMiniGrooming(privateChannelId);
+    try {
+        await setNextMiniGrooming();
+        await postInfoAboutNextMiniGrooming(privateChannelId);
+    } catch (e) {
+        console.error("Error executing Thursdays Mini-grooming cron: ", e);
+    }
 }, null, true, 'Europe/Riga');

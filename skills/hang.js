@@ -31,10 +31,12 @@ const hang = async (commands, hangedUser, hangedBy, channel) => {
 
 const getList = async (channel) => {
     const userHangs = await getThisMonthsHangedUsers();
-    const message = userHangs.map(current => {
-            return `${current.name}: ${current.count}\n`;
-        });
-    return await slackApi.postMessage(channel, "Total hangs for current month:\n" + message.join(""));
+    const message = userHangs.length === 0
+        ? "Nobody hanged yet..."
+        : "Total hangs for current month:\n" + userHangs.map(current => {
+                return `${current.name}: ${current.count}\n`;
+            }).join("");
+    return await slackApi.postMessage(channel, message);
 }
 
 const getListForUser = async (user, channel) => {
