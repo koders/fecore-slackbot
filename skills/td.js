@@ -1,5 +1,6 @@
 const slackApi = require("../api/slack");
 const Defective = require("../models/defective");
+const formatDateAndTime = require("../utils").formatDateAndTime;
 
 module.exports = async (payload) => {
     const { channel, text } = payload.event;
@@ -17,6 +18,6 @@ module.exports = async (payload) => {
 
     if (commands[2] === "get") {
         const currentTrueDefective = await Defective.findOne().sort({ date: -1 });
-        return await slackApi.postMessage(channel, "True defective for this sprint is " + currentTrueDefective.name + " since " + currentTrueDefective.date);
+        return await slackApi.postMessage(channel, "True defective for this sprint is " + currentTrueDefective.name + " since " + formatDateAndTime(currentTrueDefective.date));
     }
 };
