@@ -16,8 +16,11 @@ module.exports = async (payload) => {
         }
     }
 
-    if (commands[2] === "get") {
+    if (!commands[2] || commands[2] === "get") {
         const currentTrueDefective = await Defective.findOne().sort({ date: -1 });
-        return await slackApi.postMessage(channel, "True defective for this sprint is " + currentTrueDefective.name + " since " + formatDateAndTime(currentTrueDefective.date));
+        const message = currentTrueDefective
+            ? "True defective for this sprint is " + currentTrueDefective.name + " since " + formatDateAndTime(currentTrueDefective.date)
+            : "No True defective set!";
+        return await slackApi.postMessage(channel, message);
     }
 };
