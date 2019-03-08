@@ -11,9 +11,11 @@ module.exports = async (req, res) => {
     try {
         const { text, type } = payload.event;
         const commands = text.split(" ");
-        let mainCommand = commands[1];
+        let mainCommand = commands[1].toLowerCase();
         if (mainCommand === "unhang") {
             mainCommand = "hang";
+        } else if (mainCommand === "wfh") {
+            mainCommand = "workingFromHome";
         }
         // Bot is mentioned
         if (payload.event && type === "app_mention") {

@@ -14,6 +14,7 @@ module.exports = async (payload) => {
         {title: "mg", description: "Show status of next grooming"},
         {title: "mg request reason", description: "Request next grooming"},
         {title: "mg urgent reason", description: "Request urgent grooming, to be right now"},
+        {title: "wfh description", description: "Request work from home, has to include date and reason in description. Sends message to reporting manager."},
     ];
     const message = commands.map(command => `*${command.title}* | ${command.description}\n`);
     return await slackApi.postOnlyVisibleToUser(channel, "This is the stuff I know:\n" + message.join(""), user);
