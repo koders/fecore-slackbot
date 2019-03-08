@@ -26,7 +26,7 @@ module.exports = async (payload) => {
             await minigroomingrequest.save();
             return await slackApi.replyToMessage(channel, "Thank you, mini-grooming requested...", ts);
         } else {
-            return await slackApi.replyToMessage(channel, "You have to provide a reason for mini grooming.", ts);  
+            return await slackApi.postOnlyVisibleToUser(channel, "You have to provide a reason for mini grooming.", user);  
         }
     }
     if (commands[2] === "urgent") {
@@ -34,7 +34,7 @@ module.exports = async (payload) => {
         if (reason) {
             return await slackApi.postMessage(channel, `<!here> Urgent mini-grooming requested by <@${user}>. Reason: ${reason}`);
         } else {
-            return await slackApi.replyToMessage(channel, "You have to provide a reason to request an urgent mini grooming.", ts);  
+            return await slackApi.postOnlyVisibleToUser(channel, "You have to provide a reason to request an urgent mini grooming.", user);  
         }
     }
 
