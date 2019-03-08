@@ -11,9 +11,13 @@ module.exports = async (req, res) => {
     try {
         const { text, type } = payload.event;
         const commands = text.split(" ");
+        let mainCommand = commands[1];
+        if (mainCommand === "unhang") {
+            mainCommand = "hang";
+        }
         // Bot is mentioned
         if (payload.event && type === "app_mention") {
-            require("./skills/" + commands[1])(payload);
+            require("./skills/" + mainCommand)(payload);
         }
     } catch (e) {
         console.error("Error occurred processing bot query:", e);
