@@ -1,6 +1,7 @@
 const slackApi = require("../api/slack");
 const Hang = require("../models/hang");
 const formatDateAndTime = require("../utils").formatDateAndTime;
+const CronJob = require('cron').CronJob;
 
 module.exports = async (payload) => {
     const { channel, text, user } = payload.event;
@@ -83,3 +84,20 @@ const unhang = async (payload) => {
     }
     return await slackApi.postMessage(channel, `<@${user}> unhanged ${hangedUser}`);
 }
+
+const privateChannelId = process.env.fartingElephant;
+
+// First weekday of the month @10:50
+new CronJob('50 10 1-3 * *', async function() {
+    const now = new Date();
+    if (now.getDay() === 1) {
+        await getList(privateChannelId);
+    }
+}, null, true, 'Europe/Riga');
+
+new CronJob('50 10 1 * *', async function() {
+    const now = new Date();
+    if (now.getDay() > 1 && now.getDay() <= 5) {
+        await getList(privateChannelId);
+    }
+}, null, true, 'Europe/Riga');

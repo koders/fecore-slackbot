@@ -2,7 +2,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const botController = require('./bot.js');
-const hangController = require('./hang.js');
+require("./skills/mg.js");
+require("./skills/hang.js");
 
 const PORT = process.env.PORT || 4390;
 // Instantiates Express and assigns our app variable to it
@@ -22,5 +23,3 @@ mongoose.connect(`mongodb://${dbUser}:${dbPass}@ds261155.mlab.com:61155/heroku_5
 app.get('/', (req,res) => res.send("Hello world!"));
 
 app.post('/bot', botController);
-
-app.post('/hang', hangController);
