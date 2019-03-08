@@ -4,7 +4,7 @@ module.exports = async (payload) => {
     const { channel, user } = payload.event;
     const commands = [
         {title: "help", description: "Show help"},
-        {title: "td get", description: "Show current true defective"},
+        {title: "td", description: "Show current true defective"},
         {title: "td set @user", description: "Set new true defective"},
         {title: "joke [$category]", description: "Brighten day"},
         {title: "joke categories", description: "Joke list"},
