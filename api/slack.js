@@ -14,9 +14,14 @@ const postOnlyVisibleToUser = async (channel, text, user) =>
 const sendDM = async (userID, text) => 
     await web.chat.postMessage({channel: userID, text});
 
+const postInteractiveMessage = async (channel, text, attachments) => {
+    await web.chat.postMessage({channel, text, attachments});
+}
+
 module.exports = {
     postMessage,
     replyToMessage,
     postOnlyVisibleToUser,
     sendDM,
+    postInteractiveMessage,
 }
