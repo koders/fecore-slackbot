@@ -48,9 +48,7 @@ module.exports = async (payload) => {
 };
 
 const postResponse = async (payload) => {
-    const { callback_id, channel, actions } = payload;
-    console.log(callback_id);
-    
+    const { callback_id, actions } = payload;
     const parsedCallback = JSON.parse(callback_id);
     return await slackApi.replyToMessage(parsedCallback.channel, actions[0].value, parsedCallback.ts);
 }

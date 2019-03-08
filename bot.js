@@ -7,15 +7,16 @@ module.exports = async (req, res) => {
     }
     // immediately respond to slack that request is received
     res.sendStatus(200);
-    if (payload.payload) {
-        const parsedPayload = JSON.parse(payload.payload);
-        if (parsedPayload && parsedPayload.type === "interactive_message") {
-            require("./skills/review")(parsedPayload);
-            return;
-        }
-    }
 
     try {
+        if (payload.payload) {
+            const parsedPayload = JSON.parse(payload.payload);
+            if (parsedPayload && parsedPayload.type === "interactive_message") {
+                require("./skills/review")(parsedPayload);
+                return;
+            }
+        }
+        
         const { text, type } = payload.event;
         const commands = text.split(" ");
         let mainCommand = commands[1].toLowerCase();
