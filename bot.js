@@ -1,3 +1,4 @@
+const Command = require("./models/command");
 const botName = "Chuck"
 
 module.exports = async (req, res) => {
@@ -29,6 +30,8 @@ module.exports = async (req, res) => {
         }
         // Bot is mentioned
         if (payload.event && type === "app_mention" && username !== botName) {
+            const command = new Command({text, date: Date.now()});
+            command.save();
             require("./skills/" + mainCommand)(payload);
         }
     } catch (e) {
