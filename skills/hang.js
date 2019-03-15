@@ -18,15 +18,33 @@ module.exports = async (payload) => {
     } else if (!hangedUser.startsWith("<@")) {
         return await slackApi.postOnlyVisibleToUser(channel, "That's not a valid Slack user, you can't hang him.", user);
     } else {
-        return await hang(commands, hangedUser, user, channel);
+        const userCount = commands.slice(3).findIndex(text => !isUser(text));
+        let userEndIndex = 3 + Math.max(0, userCount);
+        if (isUser(commands[userEndIndex])) {
+            userEndIndex++;
+        }
+        const users = commands.slice(2, userEndIndex);
+        const reason = commands.slice(userEndIndex).join(" ");
+        return await hang(users, reason, user, channel);
     }
 };
 
-const hang = async (commands, hangedUser, hangedBy, channel) => {
-    const reason = commands.slice(3).join(" ");
-    const hang = new Hang({name: hangedUser, date: Date.now(), reason, hanger: `<@${hangedBy}>`});
-    await hang.save();
-    return await slackApi.postMessage(channel, hangedUser + " got hanged " + (reason || "for nothing :dunno:"));
+const isUser = text => {
+    return text && text.match(/<@.*>/g);
+}
+
+const hang = async (users, reason, hangedBy, channel) => {
+    const promises = [];
+    users.forEach(user => {
+        const hang = new Hang({name: user, date: Date.now(), reason, hanger: `<@${hangedBy}>`});
+        promises.push(new Promise((resolve) => {
+            hang.save().then(resolve);
+        }));
+    });
+    return Promise.all(promises)
+    .then(() => {
+        slackApi.postMessage(channel, users.join(" ") + " got hanged " + (reason || "for nothing :dunno:"));
+    });
 }
 
 const getList = async (channel) => {
