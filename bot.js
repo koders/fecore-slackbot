@@ -30,7 +30,7 @@ module.exports = async (req, res) => {
         }
         // Bot is mentioned
         if (payload.event && type === "app_mention" && username !== botName) {
-            const command = new Command({text, date: Date.now()});
+            const command = new Command({text, date: Date.now(), user: payload.event.user});
             command.save();
             require("./skills/" + mainCommand)(payload);
         }
