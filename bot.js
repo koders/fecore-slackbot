@@ -1,3 +1,5 @@
+const botName = "Chuck"
+
 module.exports = async (req, res) => {
     const payload = req.body;
     if (payload && payload.type === "url_verification") {
@@ -17,7 +19,7 @@ module.exports = async (req, res) => {
             }
         }
         
-        const { text, type } = payload.event;
+        const { text, type, username } = payload.event;
         const commands = text.split(" ");
         let mainCommand = commands[1].toLowerCase();
         if (mainCommand === "unhang") {
@@ -26,7 +28,7 @@ module.exports = async (req, res) => {
             mainCommand = "workingFromHome";
         }
         // Bot is mentioned
-        if (payload.event && type === "app_mention") {
+        if (payload.event && type === "app_mention" && username !== botName) {
             require("./skills/" + mainCommand)(payload);
         }
     } catch (e) {
