@@ -1,14 +1,14 @@
 const axios = require("axios");
 const slackApi = require("../api/slack");
 
-const randomIntros = [
-    "",
-    "",
-    "I've got one for you - ",
-    "You got it, buddy, - ",
-    "Here you go - ",
-    "Catch this - ",
-];
+// const randomIntros = [
+//     "",
+//     "",
+//     "I've got one for you - ",
+//     "You got it, buddy, - ",
+//     "Here you go - ",
+//     "Catch this - ",
+// ];
 
 module.exports = async (payload) => {
     const { channel, text } = payload.event;
@@ -25,9 +25,9 @@ module.exports = async (payload) => {
 const getJoke = async (channel, category) => {
     const categoryLink = category ? `?category=${category}` : "";
     const response = await axios.get("http://api.chucknorris.io/jokes/random" + categoryLink);
-    const randomNumber = Math.floor(Math.random() * (randomIntros.length - 1));
-    const randomIntro = randomIntros[randomNumber];
-    return await slackApi.postMessage(channel, randomIntro + response.data.value);
+    // const randomNumber = Math.floor(Math.random() * (randomIntros.length - 1));
+    // const randomIntro = randomIntros[randomNumber];
+    return await slackApi.postMessage(channel, response.data.value);
 }
 
 const getCategories = async (channel) => {
