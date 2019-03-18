@@ -1,4 +1,5 @@
 const slackApi = require("../api/slack");
+const Review = require("../models/review");
 
 module.exports = async (payload) => {
     if (payload.type === "interactive_message") {
@@ -7,10 +8,15 @@ module.exports = async (payload) => {
     const { user, text, ts, channel } = payload.event;
 
     const commands = text.split(" ");
+    const link = commands[2];
+    const comments = commands.slice(3).join(" ") || "";
+
+    const review = new Review({user, link, comments});
+    review.save();
 
     return await slackApi.postInteractiveMessage(
         process.env.fartingElephant,
-        `<@${user}> just posted a new merge request ${commands[2]} ${commands.slice(3).join(" ") || ""}`,
+        `<@${user}> just posted a new merge request ${link} ${comments}`,
         [
             {
                 // text: "Choose a game to play",
